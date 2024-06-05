@@ -27,27 +27,35 @@ def diferencia_central_hesiana(f,x):
             f1=f(xcopy1)
             fx= 2*f(x)
             f2=f(xcopy2)
-            # print(xcopy1,fx,xcopy2)
-            subxfinal.append((f1-fx+f2)/0.0001)
+
+            t1=(np.array([x[i]+Dx*x[i],x[j]+Dx*x[j]]))
+            t2=(np.array([x[i]+Dx*x[i],x[j]-Dx*x[j]]))
+            t3=(np.array([x[i]-Dx*x[i],x[j]+Dx*x[j]]))
+            t4=(np.array([x[i]-Dx*x[i],x[j]-Dx*x[j]]))
+            ft1=f(t1)
+            ft2=f(t2)
+            ft3=f(t3)
+            ft4=f(t4)
+            div=4*(Dx*x[i]*Dx*x[j])
+            a_fx=ft1-ft2-ft3+ft4
+            a_fx=a_fx/div
+
             if j > i:
-                t1=(np.array([x[i]+Dx*x[i],x[j]+Dx*x[j]]))
-                t2=(np.array([x[i]+Dx*x[i],x[j]-Dx*x[j]]))
-                t3=(np.array([x[i]-Dx*x[i],x[j]+Dx*x[j]]))
-                t4=(np.array([x[i]-Dx*x[i],x[j]-Dx*x[j]]))
-                ft1=f(t1)
-                ft2=f(t2)
-                ft3=f(t3)
-                ft4=f(t4)
-                div=4*Dx*x[i]*x[j]
-                print('terminos',t1,t2,t3,t4)
-                print(ft1,ft2,ft3,ft4)
-                print(ft1-ft2-ft3+ft4)
-                a_fx=ft1-ft2-ft3+ft4
-                
-        xfinal.append(subxfinal)
-    
-        # print(f'i = {i}')
-    print('fin',xfinal)
+                sub11=((f1-fx+f2)/(Dx*x[i])**2)
+                sub12=(a_fx)
+            if j == i:
+                sub21=(a_fx)
+                sub22=((f1-fx+f2)/(Dx*x[i])**2)
+        if i == 0:
+            subxfinal.append(sub11)
+            subxfinal.append(sub12)
+            xfinal.append(subxfinal)
+        if i == 1:
+            subxfinal.append(sub21)
+            subxfinal.append(sub22)
+            xfinal.append(subxfinal)
+    return xfinal
+
            
             
 
@@ -57,8 +65,8 @@ def funcion_prueba(x):
     r = (x[0]**2 + x[1] - 11)**2 + (x[0] + x[1]**2 - 7)**2
     return r
 
-xt=np.transpose(np.array([1.0,1.0]))
+xt=np.transpose(np.array([1.0,1.0,1.0]))
 
 
-# print(diferencia_central_gradiente(funcion_prueba,xt))
-diferencia_central_hesiana(funcion_prueba,xt)
+print(diferencia_central_gradiente(funcion_prueba,xt))
+print(diferencia_central_hesiana(funcion_prueba,xt))
