@@ -18,15 +18,37 @@ def diferencia_central_hesiana(f,x):
     Dx=0.01
     xfinal=[]
     for i in range(len(x)):
+        subxfinal=[]
         xcopy1=np.copy(x)
         xcopy2=np.copy(x)
         for j in range(len(x)):
-            xcopy1[j]=x[j]+Dx*x[j]
-            xcopy2[j]=x[j]-Dx*x[j]
-            fx=f(x)
+            xcopy1[i]=x[j]+Dx*x[j]
+            xcopy2[i]=x[j]-Dx*x[j]
             f1=f(xcopy1)
+            fx= 2*f(x)
             f2=f(xcopy2)
-            print((f1-fx+f2)/(Dx*x[j])**2)
+            # print(xcopy1,fx,xcopy2)
+            subxfinal.append((f1-fx+f2)/0.0001)
+            if j > i:
+                t1=(np.array([x[i]+Dx*x[i],x[j]+Dx*x[j]]))
+                t2=(np.array([x[i]+Dx*x[i],x[j]-Dx*x[j]]))
+                t3=(np.array([x[i]-Dx*x[i],x[j]+Dx*x[j]]))
+                t4=(np.array([x[i]-Dx*x[i],x[j]-Dx*x[j]]))
+                ft1=f(t1)
+                ft2=f(t2)
+                ft3=f(t3)
+                ft4=f(t4)
+                div=4*Dx*x[i]*x[j]
+                print('terminos',t1,t2,t3,t4)
+                print(ft1,ft2,ft3,ft4)
+                print(ft1-ft2-ft3+ft4)
+                a_fx=ft1-ft2-ft3+ft4
+                
+        xfinal.append(subxfinal)
+    
+        # print(f'i = {i}')
+    print('fin',xfinal)
+           
             
 
 
@@ -38,5 +60,5 @@ def funcion_prueba(x):
 xt=np.transpose(np.array([1.0,1.0]))
 
 
-print(diferencia_central_gradiente(funcion_prueba,xt))
+# print(diferencia_central_gradiente(funcion_prueba,xt))
 diferencia_central_hesiana(funcion_prueba,xt)
